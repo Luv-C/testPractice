@@ -1,9 +1,7 @@
 package testExecution;
 
-import exceloperation.ReadExcel;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import triangle.Judge;
+import excelOperation.ReadExcel;
+import problems.triangle.Judge;
 
 public class TriangleTest {
     public final String filePath="src/main/resources/triangleTestCases.xlsx";
