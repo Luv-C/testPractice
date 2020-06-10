@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import testExecution.CommissionTest;
 import testExecution.TriangleTest;
+import testExecution.CalendarTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +51,8 @@ public class MainApp extends Application {
         final ComboBox<String> problemComboBox = new ComboBox<String>();
         problemComboBox.getItems().addAll(
                 "三角形问题",
-                "佣金问题"
+                "佣金问题",
+                "万年历问题"
         );
         //选择框2--选择待执行的用例
         final ComboBox<String> testCaseComboBox = new ComboBox<String>();
@@ -70,6 +72,12 @@ public class MainApp extends Application {
                     getTestCaseComboBox(testCaseComboBox,number);
                     barChart.setTitle("佣金问题测试");
                 }
+                else if(problemComboBox.getSelectionModel().getSelectedIndex()==2){
+                    String filePath = "src/main/resources/calendarTestCases.xlsx";
+                    int number = ReadExcel.getNumberOfRow(filePath);
+                    getTestCaseComboBox(testCaseComboBox,number);
+                    barChart.setTitle("万年历问题测试");
+                }
             }
         });
 
@@ -79,6 +87,7 @@ public class MainApp extends Application {
             public void handle(ActionEvent event) {
                int index=problemComboBox.getSelectionModel().getSelectedIndex();
                if(index==0){
+                   //处理三角形问题
                    TriangleTest triangleTest = new TriangleTest();
                    String filePath = "src/main/resources/triangleTestCases.xlsx";
                    int number = ReadExcel.getNumberOfRow(filePath);
@@ -93,6 +102,7 @@ public class MainApp extends Application {
                    }
                }
                else if(index == 1){
+                   //处理佣金问题
                    CommissionTest commissionTest = new CommissionTest();
                    String filePath = "src/main/resources/commissionTestCases.xlsx";
                    int number = ReadExcel.getNumberOfRow(filePath);
@@ -105,11 +115,27 @@ public class MainApp extends Application {
                        commissionTest.executeOne(number);
                        changeBarChart(number,barChart,filePath,2);
                    }
+               }
+               else if(index==2){
+                   //处理万年历问题
+                   CalendarTest calendarTest = new CalendarTest();
+                   String filePath = "src/main/resources/calendarTestCases.xlsx";
+                   int number = ReadExcel.getNumberOfRow(filePath);
+                   if(testCaseComboBox.getSelectionModel().getSelectedIndex()==0){
+                       calendarTest.executeAll();
+                       changeBarChart(number,barChart,filePath,1);
+                   }
+                   else {
+                       number=testCaseComboBox.getSelectionModel().getSelectedIndex();
+                       calendarTest.executeOne(number);
+                       changeBarChart(number,barChart,filePath,2);
+                   }
 
                }
             }
         });
 
+        //显示元素排版
         GridPane grid = new GridPane();
         grid.setVgap(4);
         grid.setHgap(10);
@@ -183,6 +209,6 @@ public class MainApp extends Application {
         );
 
         bc.getData().setAll(barChartDataUpdate);
-        System.out.println(numberOfPass+";"+numberOfFail+";"+numberOfWait);
+        //System.out.println(numberOfPass+";"+numberOfFail+";"+numberOfWait);
     }
 }
