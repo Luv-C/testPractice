@@ -21,13 +21,13 @@ public class Judge {
             }
         }
         else {
-            return "含有非正数长度";
+            return "长度超出范围";
         }
     }
 
-    //判断输入的三条边长是否为正整数
+    //判断输入的三条边长是否合法
     public boolean isLegalLength(int x,int y,int z){
-        return x > 0 && y > 0 && z > 0;
+        return x > 0 && y > 0 && z > 0 && x < 201 && y < 201 && z < 201;
     }
 
     //判断输入三条边长是否能构成三角形
@@ -44,4 +44,5 @@ public class Judge {
     public boolean isIsosceles(int x,int y,int z){
         return x == y || x == z || y == z;
     }
+
 }

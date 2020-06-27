@@ -15,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import testExecution.CalendarBeforeTest;
 import testExecution.CommissionTest;
 import testExecution.TriangleTest;
 import testExecution.CalendarTest;
@@ -52,7 +53,8 @@ public class MainApp extends Application {
         problemComboBox.getItems().addAll(
                 "三角形问题",
                 "佣金问题",
-                "万年历问题"
+                "万年历问题",
+                "万年历问题（bug.ver）"
         );
         //选择框2--选择待执行的用例
         final ComboBox<String> testCaseComboBox = new ComboBox<String>();
@@ -77,6 +79,12 @@ public class MainApp extends Application {
                     int number = ReadExcel.getNumberOfRow(filePath);
                     getTestCaseComboBox(testCaseComboBox,number);
                     barChart.setTitle("万年历问题测试");
+                }
+                else if (problemComboBox.getSelectionModel().getSelectedIndex()==3){
+                    String filePath = "src/main/resources/calendarTestCases.xlsx";
+                    int number = ReadExcel.getNumberOfRow(filePath);
+                    getTestCaseComboBox(testCaseComboBox,number);
+                    barChart.setTitle("万年历问题(bug.ver)测试");
                 }
             }
         });
@@ -128,6 +136,21 @@ public class MainApp extends Application {
                    else {
                        number=testCaseComboBox.getSelectionModel().getSelectedIndex();
                        calendarTest.executeOne(number);
+                       changeBarChart(number,barChart,filePath,2);
+                   }
+
+               } else if (index == 3) {
+                   //处理万年历bug版本问题
+                   CalendarBeforeTest calendarBeforeTest = new CalendarBeforeTest();
+                   String filePath = "src/main/resources/calendarTestCases.xlsx";
+                   int number = ReadExcel.getNumberOfRow(filePath);
+                   if(testCaseComboBox.getSelectionModel().getSelectedIndex()==0){
+                       calendarBeforeTest.executeAll();
+                       changeBarChart(number,barChart,filePath,1);
+                   }
+                   else {
+                       number=testCaseComboBox.getSelectionModel().getSelectedIndex();
+                       calendarBeforeTest.executeOne(number);
                        changeBarChart(number,barChart,filePath,2);
                    }
 
