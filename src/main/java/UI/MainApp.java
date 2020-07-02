@@ -45,9 +45,9 @@ public class MainApp extends Application {
         yAxis.setLabel("数量");
 
         BarChart<String, Number> barChart = new BarChart<String, Number>(xAxis, yAxis);
-
         //建立文本区域
         final TextArea text = new TextArea();
+        text.setMinWidth(640);
 
         //选择框1--选择问题类型
         final ComboBox<String> problemComboBox = new ComboBox<String>();
@@ -209,17 +209,21 @@ public class MainApp extends Application {
         grid.setHgap(10);
         grid.setPadding(new Insets(5, 5, 5, 5));
         grid.add(new Label("测试对象"), 0, 0);
+        problemComboBox.setMinWidth(200);
         grid.add(problemComboBox, 1, 0);
-        grid.add(new Label("执行测试用例编号"), 2, 0);
-        grid.add(testCaseComboBox, 3, 0);
-        grid.add(barChart, 0, 2, 4, 1);
-        grid.add(text, 8, 2, 3, 1);
-        grid.add(button, 0, 3);
+        grid.add(button, 0, 2);
+        grid.add(new Label("测试用例"), 0, 1);
+        testCaseComboBox.setMinWidth(200);
+        grid.add(testCaseComboBox, 1, 1);
+
+        grid.add(barChart, 0, 3, 4, 1);
+        grid.add(text, 0, 4, 4, 1);
+
 //        grid.add (notification, 1, 3, 3, 1);
 
         VBox vBox = new VBox(grid);
 
-        Scene scene = new Scene(vBox, 800, 600);
+        Scene scene = new Scene(vBox, 650, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -249,8 +253,7 @@ public class MainApp extends Application {
                 } else if ("fail".equals(ReadExcel.getDataCell(filePath, 7, i))) {
                     numberOfFail++;
                     text.appendText("用例"+ReadExcel.getDataCell(filePath,1,i)+"：failed\n");
-                    text.appendText("预期结果："+ReadExcel.getDataCell(filePath,5,i)+"\n实际结果: "+ReadExcel.getDataCell(filePath,6,i));
-
+                    //text.appendText("预期结果："+ReadExcel.getDataCell(filePath,5,i)+"\n实际结果: "+ReadExcel.getDataCell(filePath,6,i));
 
                 } else {
                     numberOfWait++;
@@ -262,9 +265,13 @@ public class MainApp extends Application {
             if ("pass".equals(ReadExcel.getDataCell(filePath, 7, number+1))) {
                 numberOfPass++;
                 text.appendText("用例"+ReadExcel.getDataCell(filePath,1,number+1)+"：passed\n");
+                text.appendText("输入变量：\n"+ReadExcel.getDataCell(filePath,2,number+1)+"\n"+ReadExcel.getDataCell(filePath,3,number+1)+"\n"+ReadExcel.getDataCell(filePath,4,number+1)+"\n");
+                text.appendText("预期结果："+ReadExcel.getDataCell(filePath,5,number+1)+"\n实际结果: "+ReadExcel.getDataCell(filePath,6,number+1));
+
             } else if ("fail".equals(ReadExcel.getDataCell(filePath, 7, number+1))) {
                 numberOfFail++;
                 text.appendText("用例"+ReadExcel.getDataCell(filePath,1,number+1)+"：failed\n");
+                text.appendText("输入变量：\n"+ReadExcel.getDataCell(filePath,2,number+1)+"\n"+ReadExcel.getDataCell(filePath,3,number+1)+"\n"+ReadExcel.getDataCell(filePath,4,number+1)+"\n");
                 text.appendText("预期结果："+ReadExcel.getDataCell(filePath,5,number+1)+"\n实际结果: "+ReadExcel.getDataCell(filePath,6,number+1));
 
             } else {
